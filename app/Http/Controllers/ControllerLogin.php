@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\ModelUser;
+use Session;
 class ControllerLogin extends Controller
 {
     /**
@@ -42,6 +43,7 @@ class ControllerLogin extends Controller
         $user = new ModelUser();
 
         $user->nama_pengguna = $request->nama;
+        Session::put('nama',$request->nama);
         $user->save();
 
         return redirect('home')->with('alert-success', 'Yeah Selamat!! Anda berhasil menambahkan data!');
@@ -50,6 +52,11 @@ class ControllerLogin extends Controller
     public function home()
     {
         return view('index');
+    }
+
+    public function logout(){
+        Session::flush();
+        return redirect('/')->with('alert-success','Kamu sudah logout');
     }
 
     /**

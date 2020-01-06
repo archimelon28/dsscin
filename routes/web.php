@@ -14,8 +14,9 @@
 
 // Route::get('home', 'ControllerSurat@suratjadi')->name('suratjadi');
 Route::get('/','ControllerLogin@index')->name('/');
-Route::get('home','ControllerLogin@home');
-
+Route::get('home','ControllerLogin@home')->name('home');
+Route::get('logout', 'ControllerLogin@logout')->name('logout');
+Route::get('rating','ControllerNilai@rating')->name('rating');
 Route::post('loginpost','ControllerLogin@loginpost')->name('loginpost');
 
 Route::resource('kampus','ControllerKampus');

@@ -27,6 +27,15 @@ class ControllerNilai extends Controller
         //
     }
 
+    public function rating()
+    {
+        $rating = DB::table('tb_penilaian')->join('tb_kampus','tb_kampus.id_kampus','=','tb_penilaian.id_kampus')->select('tb_kampus.*','tb_penilaian.rating') ->get();
+        $sort_rating = $rating->sortByDesc('rating');
+
+        // dd($sort_rating);die();
+        return view('rating',compact('sort_rating'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -45,17 +54,14 @@ class ControllerNilai extends Controller
         $akrebagi = DB::table('tb_penilaian')->min('akreditas');
         $sarabagi = DB::table('tb_penilaian')->min('sarana_prasarana');
         // dd($uktbagi);die();
-        
 
         $data = DB::table('tb_penilaian')->select('id_penilaian','ukt','akreditas','sarana_prasarana')->get();
-        
+        //perangkingan
         foreach ($data as $d ) {
             $x = ($d->ukt/$uktbagi) * $ukt + ($akrebagi/$d->akreditas) * $akre + ($sarabagi/$d->sarana_prasarana) * $sara;
             DB::table('tb_penilaian')->where('id_penilaian',$d->id_penilaian)->update(['rating' => $x]);
         }
-        // $nilai->rating = $x;
-        // $nilai->save();
-        return redirect()->route('/')->with('alert-success', 'Yeah Selamat!! Anda berhasil menambahkan data!');
+        return redirect()->route('rating')->with('alert-success', 'Yeah Selamat!! Anda berhasil menambahkan data!');
     }
 
     /**

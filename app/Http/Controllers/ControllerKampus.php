@@ -37,6 +37,7 @@ class ControllerKampus extends Controller
      */
     public function store(Request $request)
     {
+        //maskkin data ke table kampus
         $kampus = new ModelKampus();
 
         $kampus->nama = $request->nama;
@@ -53,7 +54,9 @@ class ControllerKampus extends Controller
         $kampus->sarana_prasarana = $request->sarana;
         
         $kampus->save();
+        //--
 
+        //proses konversi
         $nilai = new ModelPenilaian();
 
         if ($request->ukt <= 3000000) {
